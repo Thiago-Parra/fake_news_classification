@@ -1,0 +1,39 @@
+name: CI Pipeline MLOps
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt 
+
+      - name: Executar notebook Exploracao
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/01_exploracao.ipynb --output 01_exploracao_output.ipynb --output-dir notebooks
+
+      - name: Executar notebook Validacao e Treino
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/02_pipeline_validacao.ipynb --output 02_pipeline_validacao_output.ipynb --output-dir notebooks
+
+      - name: Executar notebook Monitoracao
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/04_monitorar_fairness.ipynb --output 04_monitorar_fairness_output.ipynb --output-dir notebooks
+          
+      - name: Rodar testes automatizados
+        run: pytest test_pipeline.py
