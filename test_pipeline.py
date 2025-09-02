@@ -22,29 +22,29 @@ def test_model_files_exist():
 
 def test_vectorizer_output_shape():
     vectorizer = joblib.load("./vectorizer.joblib")
-    sample = ["This is a sample text."]
+    sample = ["This is a sample title."]
     vetor = vectorizer.transform(sample)
     assert vetor.shape[0] == 1, "Vetor retornou de forma incorreta"
 
 def test_model_prediction_labels():
     model = joblib.load("./model.joblib")
     vectorizer = joblib.load("./vectorizer.joblib")
-    sample = ["This is a sample text."]
+    sample = ["This is a sample title."]
     vetor = vectorizer.transform(sample)
     pred = model.predict(vetor)[0]
     assert pred in ["fake", "real"], f"Rótulo inesperado {pred}"
 
 def test_data_validation():
     df = pd.read_csv("./data/news_limpo.csv")
-    assert "text" in df.columns and "label" in df.columns
-    assert df["text"].notnull().all()
+    assert "title" in df.columns and "label" in df.columns
+    assert df["title"].notnull().all()
     assert df["label"].isin(["fake","real"]).all()
 
 def test_fake_news_classification():
     model = joblib.load(model_path)
     vectorizer = joblib.load(vectorizer_path)
 
-    for text, expected in test_cases:
-        pred = model.predict(vectorizer.transform([text]))[0]
-        print(f"Texto: {text}\nPrevisto: {pred} | Esperado: {expected}\n")
+    for title, expected in test_cases:
+        pred = model.predict(vectorizer.transform([title]))[0]
+        print(f"Título: {title}\nPrevisto: {pred} | Esperado: {expected}\n")
         assert pred == expected
