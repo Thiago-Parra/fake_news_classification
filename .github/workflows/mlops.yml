@@ -26,6 +26,9 @@ jobs:
       - name: Executar notebook Exploracao
         run: |
           jupyter nbconvert --to notebook --execute notebooks/01_exploracao.ipynb --output 01_exploracao_output.ipynb --output-dir notebooks
+      
+      - name: Create mlruns directory
+        run: mkdir -p mlruns
 
       - name: Executar notebook Validacao e Treino
         run: |
