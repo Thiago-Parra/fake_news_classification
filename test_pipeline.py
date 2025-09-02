@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 model_path = "model.joblib"
 vectorizer_path = "vectorizer.joblib"
 
-# Lista de cenários de teste: (texto, classe_esperada)
+# Lista de cenários de teste: (título, classe_esperada)
 test_cases = [
     # Fake news
     ("Donald Trump Sends Out Unhinged Letter To Media Demanding They Retract Every Story About His Russia Ties", "fake"),
